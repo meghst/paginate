@@ -1,0 +1,91 @@
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+* {
+    margin: 0;
+}
+
+html, body {
+    height: 100%;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    font-size: 14px;
+}
+
+#wrapper {
+    min-height: 100%;
+    height: 100%;
+    /* Margin equal to footer height */
+    margin: 0 auto -50px 0;
+    /* Pad bottom by footer height */
+    padding: 0 0 50px 0;
+}
+
+.wrapper:after {
+    content: "";
+    display: block;
+}
+
+.mdm-sidebar > a {
+    color : #101010;
+}
+
+.site-footer {
+    width:100%;
+    height: 50px;
+    bottom:0;
+    left:0;
+    background: #101010;
+    padding-top: 2px;
+}
+
+#footer-content a {
+    color: #afafaf;
+    text-decoration: none;
+
+}
+
+#footer-content a:hover {
+    color: #afafaf;
+}
+
+#footer-content {
+    margin-top: 13px;
+    margin-bottom: 10px;
+    align : center;
+    color: #afafaf;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+#footer-content a {
+    color: #afafaf;
+    text-decoration: none;
+
+}
+
+.footer-icons > span {
+    padding : 3px;
+    font-size: 18px;
+}
+
+.footer-logo {
+    margin-bottom: 25px;
+}
+
+#search-form {
+    margin-right: 10px;
+}
+
+#logout {
+    margin-right: 10px;
+}
+
+.list-unstyled li > ul > li {
+    margin-left:10px;
+    padding:8px;
+}
+
+.nav > li > a {
+    color:#787878;
+}
+
