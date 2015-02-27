@@ -11,7 +11,7 @@ angular.module('mdmUI.controllers', ['mdmUI.services','ngTable','ngTableExport']
 
             $scope.value=value
             $scope.url=mdmServer+'/'+value
-            
+            $scope.columns=[]
             
             $scope.exclude=[]
             if(value=="locations")
@@ -20,7 +20,6 @@ angular.module('mdmUI.controllers', ['mdmUI.services','ngTable','ngTableExport']
                 $scope.url+="?exclude="
                 $scope.url+=$scope.exclude.join()
                 
-                
             }
             
             $http.get($scope.url)
@@ -28,11 +27,10 @@ angular.module('mdmUI.controllers', ['mdmUI.services','ngTable','ngTableExport']
                     $scope.entities=[]
                     if(data.length==0|| !data)
                     {
+                        $scope.showTable=false
+                        $scope.entities=[]
                         alert($scope.value+" was null")
-                        temp=$scope.url.split(value)[0]
-                        console.log("temp: ",temp)
-                        value=temp.split(mdmServer)[1]
-                        
+                        return
                         
                     }
                     
