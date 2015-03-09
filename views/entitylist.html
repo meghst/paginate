@@ -1,68 +1,112 @@
-
-
 <!-- Table header template-->
 <script id="header_template" type="text/ng-template">
-          <tr>
-              <th ng-repeat="column in columns" ng-show="column.visible"
-                  class="text-center sortable" ng-class="{
-                      'sort-asc': tableParams.isSortBy(column.field, 'asc'),
-                      'sort-desc': tableParams.isSortBy(column.field, 'desc')
-                    }"
-                  ng-click="tableParams.sorting(column.field, tableParams.isSortBy(column.field, 'asc') ? 'desc' : 'asc')" >
-                  {{column.title}}
-                  <div></div>
-              </th>
-              <!--<th>Columns:{{columns.length}}</th>-->
-          </tr>
-          <tr>
-            <th ng-repeat="column in columns" ng-show="column.visible"
-          </tr>
-
-    <tr class="ng-table-filters">
-    <th data-title-text="{{column.title}}" ng-repeat="column in columns" ng-show="column.visible" class="filter">
-        <div ng-repeat="(name, filter) in column.filter">
-            <div ng-if="filter.indexOf('/') !== -1" ng-include="filter"></div>
-            <div ng-if="filter.indexOf('/') === -1" ng-include="'ng-table/filters/' + filter + '.html'"></div>
-        </div>
-    </th>
-</tr>
+  <tr>
+      <th ng-repeat="column in columns" ng-show="column.visible" style="text-transform: capitalize;">
+          {{column.title}}
+          <div></div>
+      </th>
+      <!--<th>Columns:{{columns.length}}</th>-->
+  </tr>
+  <tr>
+      <th ng-repeat="column in columns" ng-show="column.visible"
+  </tr>
 </script>
 
-<div class="row" ng-show="showTable">
-    <div>
-      <h2>{{title}}</h2>
-    </div>
-    <div style="width:100%;margin-left:50px">
-          Columns:
+<!--Not used currently-->
+<script id="sorting_header_template" type="text/ng-template">
+    <tr>
+        <th ng-repeat="column in columns" ng-show="column.visible"
+            class="text-center sortable" ng-class="{
+            'sort-asc': tableParams.isSortBy(column.field, 'asc'),
+            'sort-desc': tableParams.isSortBy(column.field, 'desc')
+            }"
+            ng-click="tableParams.sorting(column.field, tableParams.isSortBy(column.field, 'asc') ? 'desc' : 'asc')" >
+            {{column.title}}
+            <div></div>
+        </th>
+        <!--<th>Columns:{{columns.length}}</th>-->
+    </tr>
+    <tr>
+        <th ng-repeat="column in columns" ng-show="column.visible"
+    </tr>
+    <tr class="ng-table-filters">
+        <th data-title-text="{{column.title}}" ng-repeat="column in columns" ng-show="column.visible" class="filter">
+            <div ng-repeat="(name, filter) in column.filter">
+                <div ng-if="filter.indexOf('/') !== -1" ng-include="filter"></div>
+                <div ng-if="filter.indexOf('/') === -1" ng-include="'ng-table/filters/' + filter + '.html'"></div>
+            </div>
+        </th>
+    </tr>
+</script>
+
+<script type="text/ng-template" id="custom/pager">
+    <ul class="pager ng-cloak">
+      <li ng-repeat="page in pages"
+            ng-class="{'disabled': !page.active, 'previous': page.type == 'prev', 'next': page.type == 'next'}"
+            ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+        <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">&laquo; Previous</a>
+        <a ng-switch-when="next" ng-click="params.page(page.number)" href="">Next &raquo;</a>
+        
+      </li>
+      <li>
+        <div class="btn-group">
+          <button type="button" ng-class="{'active':params.count() == 10}" ng-click="params.count(10)" class="btn btn-default">10</button>
+          <button type="button" ng-class="{'active':params.count() == 25}" ng-click="params.count(25)" class="btn btn-default">25</button>
+          <button type="button" ng-class="{'active':params.count() == 50}" ng-click="params.count(50)" class="btn btn-default">50</button>
+        </div>
+      </li>
+    </ul>
+</script>
+
+<div class="row" ng-show="showTable" style="margin-top:15px">
+    <div style="width:100%;margin-left:60px;">
+        <span style="margin-left:10px">
+        Columns:
           <span ng-repeat="column in columns">
             <input  type="checkbox" ng-model="column.visible" style="margin-left:10px"/> {{column.title}}
           </span>
-      <a style="float:right;margin-right:80px;margin-bottom:10px" class="btn btn-primary" ng-click='csv.generate($event, "my-file.csv")' href='#' >
-              Export to CSV
-      </a>
-    </div>
-  <div class="col-lg-12">
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <div>
-        
-          <table ng-table="tableParams" show-filter="true" class="table" template-header="header_template" export-csv="csv" >
-            <tbody>
-              <tr ng-repeat="location in $data">
-                <td ng-repeat="column in columns" ng-if="! column['excluded']" ng-show="column.visible" sortable="column.field" filter="{column.field:'text'}">
-                  {{location[column.field]}}
-                </td>        
-                <td ng-repeat="column in exclude">
-                  <button class="btn btn-default" ng-click="click(value+'/'+location['id']+'/'+column)"+>{{column}}</button>
-                </td>               
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div>
+    </span>
     
-  </div>
+        <button style="float:left;margin-left:-30px;margin-right:30px;margin-bottom:10px" class="btn btn-primary" title="Back" ng-click='back()' href='#' >
+          <span class="glyphicon glyphicon-arrow-left"></span>
+        </button>
+       
+        <span style="margin-left:10px;margin-top:-25px;float:left"><h1>{{title}}</h1></span>
+        <span style="float:right;margin-right:80px">
+          <button style="margin-right:20px;margin-bottom:10px" class="btn btn-primary" href="#" title="Create">
+              <span class="glyphicon glyphicon-plus-sign"></span>
+          </button>
+          <button style="margin-bottom:10px" class="btn btn-primary" ng-click='csv.generate($event, "my-file.csv")' >
+          Export <input id="fileDialog"  type="file" style="display:none" webkitdirectory/><span class="glyphicon glyphicon-save-file"></span>
+          </button>
+        </span>
+    </div>
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+          <ol class="breadcrumb" id="breadcrumb" >
+            <li ng-repeat="entry in history">{{entry[0]}}</li>
+          </ol>
+            <div class="panel-body">
+                <div>
+                    <table ng-table="tableParams" show-filter="true" class="table table-bordered table-striped" style="text-align:center" template-header="header_template" template-pagination="custom/pager"  export-csv="csv" >
+                        <tbody>
+                            <tr ng-repeat="record in $data track by record.id" >
+                                <td ng-repeat="column in columns" ng-if="! column['child']" ng-show="column.visible" filter="{column.field:'text'}">
+                                    {{record[column.field]}}
+                                </td>
+                                <td ng-repeat="column in columns" ng-if="column['child']" ng-show="column.visible">
+                                    <button ng-if="record[column.field].length>0 || record[column.field].length==undefined" class="btn btn-default"  ng-click="getChild(record,column.field);params.count(10);"+>{{column.field}}</button>
+                                </td>
+                                <td >
+                                  <button title="Edit" class="btn btn-info"><span class="glyphicon glyphicon-pencil"></span></button>
+                                  <button title="Delete" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <!-- <pre>{{params}}</pre> -->
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
